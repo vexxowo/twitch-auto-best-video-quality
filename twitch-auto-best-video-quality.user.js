@@ -9,8 +9,8 @@
 // @grant        none
 // @license      MIT
 // @supportURL   https://github.com/vexxowo/twitch-auto-best-video-quality/issues
-// @updateURL    https://raw.githubusercontent.com/vexxowo/twitch-auto-best-video-quality/main/twitch-auto-best-video-quality.user.js
-// @downloadURL  https://raw.githubusercontent.com/vexxowo/twitch-auto-best-video-quality/main/twitch-auto-best-video-quality.user.js
+// @updateURL    https://raw.githubusercontent.com/vexxowo/twitch-auto-best-video-quality/refs/heads/main/twitch-auto-best-video-quality.user.js
+// @downloadURL  https://raw.githubusercontent.com/vexxowo/twitch-auto-best-video-quality/refs/heads/main/twitch-auto-best-video-quality.user.js
 // ==UserScript==
 
 let $url = "";
