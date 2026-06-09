@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Twitch - Auto Best Video Quality (VAFT Compatible & Manual Control)
+// @name         Twitch - Auto Best Video Quality (VAFT Compatible)
 // @namespace    http://tampermonkey.net/
 // @version      1.0.0
 // @description  Automatically forces Twitch to the best available video quality, updated with seamless TwitchAdSolutions (VAFT) compatibility and support for manual quality overrides.
