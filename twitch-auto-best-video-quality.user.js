@@ -2,14 +2,14 @@
 // @name         Twitch - Auto Best Video Quality (VAFT Compatible & Manual Control)
 // @namespace    https://github.com/vexxowo/
 // @version      1.0.0
-// @description  Automatically forces Twitch to the best available video quality
+// @description  Automatically forces Twitch to the best available video quality, updated with seamless TwitchAdSolutions (VAFT) compatibility and support for manual quality overrides.
 // @author       vexxowo
 // @match        https://www.twitch.tv/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=twitch.tv
 // @grant        none
 // @license      MIT
-// @downloadURL https://raw.githubusercontent.com/vexxowo/twitch-auto-best-video-quality/refs/heads/main/twitch-auto-best-video-quality.user.js
-// @updateURL https://raw.githubusercontent.com/vexxowo/twitch-auto-best-video-quality/refs/heads/main/twitch-auto-best-video-quality.user.js
+// @downloadURL  https://raw.githubusercontent.com/vexxowo/twitch-auto-best-video-quality/refs/heads/main/twitch-auto-best-video-quality.user.js
+// @updateURL    https://raw.githubusercontent.com/vexxowo/twitch-auto-best-video-quality/refs/heads/main/twitch-auto-best-video-quality.user.js
 // ==/UserScript==
 // Based on the original script "Twitch - Auto Best Video Quality" by Martin______X
 
