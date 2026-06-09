@@ -11,7 +11,7 @@ A modified userscript that automatically forces Twitch streams to their highest 
 
 1. Ensure you have a userscript manager installed in your browser (e.g., [Tampermonkey](https://www.tampermonkey.net/) or [Violentmonkey](https://violentmonkey.github.io/)).
 2. Click the link below to install the script directly from the source:
-   * **[Install directly from GitHub](https://github.com/vexxowo/twitch-auto-best-video-quality/raw/refs/heads/main/twitch-auto-best-video-quality.user.js)**
+   * **[Install directly from GitHub](https://raw.githubusercontent.com/vexxowo/twitch-auto-best-video-quality/refs/heads/main/twitch-auto-best-video-quality.user.js)**
 3. Confirm Installation:
    - Your browser extension will open a new tab. Click **Install** to finish.
 
