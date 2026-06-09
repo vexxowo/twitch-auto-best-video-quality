@@ -1,26 +1,73 @@
-# Twitch - Auto Best Video Quality (VAFT Compatible & Manual Control)
+# Twitch - Auto Best Video Quality + vaft
 
-A modified userscript that automatically forces Twitch streams to their highest available video resolution, optimized to work harmoniously with modern ad-blocking solutions and user overrides.
+A userscript for Tampermonkey and Violentmonkey that automatically selects the highest available quality on Twitch when you load a page or navigate to a new channel — without fighting your manual quality choices or conflicting with [TwitchAdSolutions (vaft)](https://github.com/ryanbr/TwitchAdSolutions).
 
-## 🚀 Key Improvements in this Fork
+---
 
-* **VAFT Compatibility:** Fully compatible with [TwitchAdSolutions' VAFT script](https://github.com/ryanbr/TwitchAdSolutions). It prevents the quality-locking issues or player crashes that occur when both scripts try to manipulate the Twitch web player simultaneously.
-* **Manual Overrides Allowed:** While the script defaults to forcing the absolute best video quality on page load or stream switch, it no longer permanently locks the player UI. If you need to manually drop the resolution down to save bandwidth, the script will respect your choice until the stream refreshes or changes.
+## What it does
 
-## 📦 Installation
+- On page load or channel navigation, automatically opens the quality menu and selects the highest available option (Source, 1440p, 1080p, etc.)
+- Does **not** override quality changes you make manually mid-session
+- Does **not** interfere with vaft while it is blocking ads
 
-1. Ensure you have a userscript manager installed in your browser (e.g., [Tampermonkey](https://www.tampermonkey.net/) or [Violentmonkey](https://violentmonkey.github.io/)).
-2. Click the link below to install the script directly from the source:
-   * **[Install directly from GitHub](https://raw.githubusercontent.com/vexxowo/twitch-auto-best-video-quality/refs/heads/main/twitch-auto-best-video-quality.user.js)**
-3. Confirm Installation:
-   - Your browser extension will open a new tab. Click **Install** to finish.
+## How it differs from the original script
 
-## ⚙️ How it Works
+This is a fork of [Twitch - Auto Best Video Quality](https://greasyfork.org/en/scripts/543926-twitch-auto-best-video-quality) by Martin______X, with two behavioural changes:
 
-The script monitors the internal Twitch player state and automatically triggers a quality change event to the maximum available source resolution upon player initialization. If an advertisement script (like VAFT) alters the player stream topology to bypass an ad, this fork gracefully steps aside to ensure your stream playback is uninterrupted, resuming its optimization once the normal stream structure returns.
+### 1. Manual quality changes are respected
 
-## 📄 License & Attribution
+The original script monitors `video.videoHeight` and re-applies the highest quality whenever the resolution changes. This means any manual quality change you make (e.g. dropping to 480p on a slow connection) gets immediately overridden.
 
-This project is a fork of the original Greasy Fork script [Twitch - Auto Best Video Quality](https://greasyfork.org/scripts/543926). 
+This fork removes that trigger. Quality is only set automatically on **page load** or **channel navigation**. After that, the player is yours.
 
-This script is distributed under the **MIT License**. You are free to modify, distribute, and use it as you see fit, provided the original copyright notices are preserved.
+### 2. vaft compatibility
+
+When vaft blocks a Twitch ad, it intercepts the stream and briefly serves a lower-quality clean stream. The original script detects this as a resolution change and enters a loop — repeatedly trying to force highest quality while vaft is in control, causing the quality menu to flicker open and closed.
+
+This fork detects when vaft is active by reading the `.adblock-overlay` element vaft maintains on `.video-player`. While vaft is blocking:
+
+- Any in-progress quality-switch cycle is aborted
+- No new quality-switch attempts are started
+
+When vaft finishes, behaviour depends on whether quality was already set for the current channel:
+
+- **Quality was never set** (e.g. vaft caught a pre-roll immediately after you navigated to a channel): one quality-set pass runs after the ad clears
+- **Quality was already set** (e.g. you changed quality manually and then an ad played): nothing happens, your choice is kept
+
+---
+
+## Installation
+
+1. Install [Tampermonkey](https://www.tampermonkey.net/) or [Violentmonkey](https://violentmonkey.github.io/) for your browser
+2. Click [here](https://github.com/vexxowo/twitch-auto-best-video-quality/raw/refs/heads/main/twitch-auto-best-video-quality.user.js) and confirm the install
+
+### Running alongside TwitchAdSolutions
+
+This script is designed to run alongside [vaft](https://github.com/ryanbr/TwitchAdSolutions). Install both and they will not conflict.
+
+---
+
+## Compatibility
+
+| Browser extension | Supported |
+|---|---|
+| Tampermonkey | ✓ |
+| Violentmonkey | ✓ |
+
+| Ad blocker script | Supported |
+|---|---|
+| vaft (TwitchAdSolutions) | ✓ |
+
+---
+
+## Credits
+
+Original script: [Twitch - Auto Best Video Quality](https://greasyfork.org/en/scripts/543926-twitch-auto-best-video-quality) by [Martin______X](https://greasyfork.org/en/users/1370399)
+
+vaft: [TwitchAdSolutions](https://github.com/ryanbr/TwitchAdSolutions) by ryanbr
+
+---
+
+## License
+
+MIT
