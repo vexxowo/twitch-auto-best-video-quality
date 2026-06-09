@@ -62,7 +62,7 @@ This script is designed to run alongside [vaft](https://github.com/ryanbr/Twitch
 
 ## Credits
 
-Original script: [Twitch - Auto Best Video Quality](https://greasyfork.org/en/scripts/543926-twitch-auto-best-video-quality) by [Martin______X](https://greasyfork.org/en/users/1370399)
+Original script: [Twitch - Auto Best Video Quality](https://greasyfork.org/en/scripts/543926-twitch-auto-best-video-quality) by [Martin______X](https://greasyfork.org/en/users/1250827-martin-x)
 
 vaft: [TwitchAdSolutions](https://github.com/ryanbr/TwitchAdSolutions) by ryanbr
 
