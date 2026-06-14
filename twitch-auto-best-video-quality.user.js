@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Twitch - Auto Best Video Quality + vaft
 // @namespace    https://github.com/vexxowo/
-// @version      1.1
-// @description  Automatically sets the highest available quality on page load and channel navigation. Respects manual quality changes mid-session. Compatible with vaft (TwitchAdSolutions) — suppresses quality switching while ads are being blocked.
+// @version      1.2
+// @description  Automatically sets the highest available quality on page load and channel navigation. Respects manual quality changes mid-session. Compatible with vaft (TwitchAdSolutions).
 // @author       vexxowo
 // @match        https://www.twitch.tv/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=twitch.tv
@@ -18,26 +18,6 @@ let $step = 1;
 let $delay = 0;
 let $cd = 0;
 
-// True once the quality-switch sequence completes for the current URL.
-// Prevents post-vaft re-triggering from overriding a manual quality change.
-let $qualitySetForUrl = false;
-
-// Tracks whether vaft was blocking on the previous tick so we can detect
-// the blocking→idle edge and retry if quality was never set for this URL.
-let $vaftWasBlocking = false;
-
-// Detects whether vaft (TwitchAdSolutions) is currently intercepting the
-// stream. vaft adds an .adblock-overlay div to .video-player and sets its
-// display to 'block' while blocking ads, and 'none' when finished.
-const isVaftBlocking = () => {
-    try {
-        const overlay = document.querySelector('.video-player .adblock-overlay');
-        return overlay !== null && overlay.style.display !== 'none';
-    } catch (e) {
-        return false;
-    }
-};
-
 const simpleClick = (async (target, step) => {
     if (target) {
         target.click();
@@ -46,9 +26,6 @@ const simpleClick = (async (target, step) => {
         $working = false;
         $step = 1;
         $delay = 0;
-        // Mark quality as successfully set for this URL so that a later
-        // vaft unblock does not override a manual quality change.
-        $qualitySetForUrl = true;
     } else {
         $step++;
     }
@@ -60,37 +37,13 @@ const twitchVideoQualityInterval = setInterval(() => {
         let video = document.querySelector("video");
 
         if (url != $url) {
-            // New page load or channel navigation — always set quality once.
             $url = url;
             $working = true;
             $step = 1;
             $delay = 0;
-            $qualitySetForUrl = false;
         }
 
-        const vaftActive = isVaftBlocking();
-
-        if (vaftActive) {
-            // vaft is intercepting the stream. Abort any in-progress
-            // quality-switch cycle so we don't hammer the UI menus while
-            // vaft is in control of the stream.
-            if ($working) {
-                $working = false;
-                $step = 1;
-                $delay = 0;
-            }
-        } else if ($vaftWasBlocking && !$qualitySetForUrl) {
-            // vaft just finished, and quality was never successfully set for
-            // this channel (e.g. a pre-roll blocked us right after navigation).
-            // Retry now that the stream is clean.
-            $working = true;
-            $step = 1;
-            $delay = 0;
-        }
-
-        $vaftWasBlocking = vaftActive;
-
-        if ($working && !vaftActive && is_video_playing(video)) {
+        if ($working && is_video_playing(video)) {
             if ($delay < 100) {
                 $delay++;
             } else {
@@ -135,12 +88,12 @@ const twitchVideoQualityInterval = setInterval(() => {
 const hide_panel_interval = setInterval(() => {
     try {
         let video = document.querySelector("video");
-        if($working && is_video_playing(video)){
+        if ($working && is_video_playing(video)) {
             $cd = 100;
-        }else{
+        } else {
             $cd = 0;
         }
-        if($cd>0){
+        if ($cd > 0) {
             let reactModal = document.querySelector('.ReactModal__Content[role="menu"]');
             let div = reactModal.querySelector('div[data-popper-reference-hidden][data-popper-escaped][data-popper-placement]');
             div.style.opacity = '0';
@@ -152,7 +105,7 @@ const hide_panel_interval = setInterval(() => {
 }, 1);
 
 const is_video_playing = (video) => {
-    if(video && video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2){
+    if (video && video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2) {
         return true;
     }
 }
