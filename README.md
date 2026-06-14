@@ -8,7 +8,7 @@ A userscript for Tampermonkey and Violentmonkey that automatically selects the h
 
 - On page load or channel navigation, automatically opens the quality menu and selects the highest available option (Source, 1440p, 1080p, etc.)
 - Does **not** override quality changes you make manually mid-session
-- Does **not** interfere with vaft while it is blocking ads
+- Does **not** conflict with vaft while it is blocking ads
 
 ## How it differs from the original script
 
@@ -18,21 +18,13 @@ This is a fork of [Twitch - Auto Best Video Quality](https://greasyfork.org/en/s
 
 The original script monitors `video.videoHeight` and re-applies the highest quality whenever the resolution changes. This means any manual quality change you make (e.g. dropping to 480p on a slow connection) gets immediately overridden.
 
-This fork removes that trigger. Quality is only set automatically on **page load** or **channel navigation**. After that, the player is yours.
+This fork removes that trigger entirely. Quality is only set automatically on **page load** or **channel navigation**. After that, the player is yours.
 
 ### 2. vaft compatibility
 
-When vaft blocks a Twitch ad, it intercepts the stream and briefly serves a lower-quality clean stream. The original script detects this as a resolution change and enters a loop — repeatedly trying to force highest quality while vaft is in control, causing the quality menu to flicker open and closed.
+The original script's resolution-change trigger is what causes the conflict with vaft. When vaft blocks an ad it briefly serves a lower-quality clean stream, which drops `videoHeight`, which the original script treats as a trigger — repeatedly trying to force quality back up while vaft is in control and causing the quality menu to flicker open and closed.
 
-This fork detects when vaft is active by reading the `.adblock-overlay` element vaft maintains on `.video-player`. While vaft is blocking:
-
-- Any in-progress quality-switch cycle is aborted
-- No new quality-switch attempts are started
-
-When vaft finishes, behaviour depends on whether quality was already set for the current channel:
-
-- **Quality was never set** (e.g. vaft caught a pre-roll immediately after you navigated to a channel): one quality-set pass runs after the ad clears
-- **Quality was already set** (e.g. you changed quality manually and then an ad played): nothing happens, your choice is kept
+Since this fork removes that trigger and only acts on URL changes, and vaft never causes a URL change, the two scripts cannot conflict. There is no active vaft detection — compatibility is a passive consequence of the design.
 
 ---
 
