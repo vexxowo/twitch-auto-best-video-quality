@@ -31,7 +31,7 @@ Since this fork removes that trigger and only acts on URL changes, and vaft neve
 ## Installation
 
 1. Install [Tampermonkey](https://www.tampermonkey.net/) or [Violentmonkey](https://violentmonkey.github.io/) for your browser
-2. Click [here](https://github.com/vexxowo/twitch-auto-best-video-quality/raw/refs/heads/main/twitch-auto-best-video-quality.user.js) and confirm the install
+2. Click [here](https://raw.githubusercontent.com/vexxowo/twitch-auto-best-video-quality/main/twitch-auto-best-video-quality.user.js) and confirm the install
 
 ### Running alongside TwitchAdSolutions
 
